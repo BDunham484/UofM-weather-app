@@ -19,17 +19,19 @@
             <section class="searchAside col-12 col-md-4">
                 <form>
                     <div class="m-5">
-                        <label for="searchInput" class="form-label">Enter a City...</label>
-                        <input type="text" class="form-control" id="searchInput" aria-describedby="citySearch" placeholder="Austin">
+                        <label for="search-input" class="form-label">Enter a City...</label>
+                        <input type="text" class="form-control" id="search-input" aria-describedby="citySearch" placeholder="Austin">
                     </div>
-                    <button id="submit" type="submit" class="btn btn-secondary">Search</button>
+                    <button id="submit" type="submit" class="btn btn-secondary mb-5">Search</button>
                 </form>
+                <div id="search-history"></div>
+                <button id="clear-history" class="btn btn-secondary mt-5">Clear History</button>
             </section>
-            <section class="weatherResults col-12 col-md-8 bg-secondary">
-                <section class="todaysWeather">
+            <section class="weatherResults col-12 col-md-8 px-0">
+                <section class="todaysWeather h-50 bg-secondary d-flex justify-content-center align-items-center">
                     yo
                 </section>
-                <section class="forecastWeather">
+                <section class="forecastWeather h-50 d-flex justify-content-center align-items-center">
                     yo
                 </section>
             </section>
