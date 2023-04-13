@@ -123,5 +123,4 @@ clearHistoryEl.addEventListener('click', clearHistoryHandler)
 searchHistoryEl.addEventListener('click', (e) => {
     let city = e.target.textContent
     getCoords(city);
-
 })
