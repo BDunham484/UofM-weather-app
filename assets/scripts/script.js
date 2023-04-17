@@ -8,6 +8,11 @@ let searchHistory = [];
 let lat;
 let lon;
 
+const renderForecast = (data) => {
+    console.log(data);
+}
+
+
 const renderToday = (data) => {
     console.log(data);
     let currentDate = dayjs().format('MMM D, YYYY')
@@ -34,10 +39,10 @@ const renderToday = (data) => {
     todaysWeatherEl.append(windSpeed);
 }
 
-const renderWeather = (data) => {
-    renderToday(data);
-    // renderForecast(data);
-}
+// const renderWeather = (data) => {
+//     renderToday(data);
+//     renderForecast(data);
+// }
 
 const getWeather = (location) => {
     let { lat } = location;
@@ -51,9 +56,25 @@ const getWeather = (location) => {
             return response.json();
         })
         .then(function (data) {
-            renderWeather(data);
+            // renderWeather(data);
+            renderToday(data);
         })
     
+}
+
+const getForecast = (location) => {
+    let { lat } = location;
+    let { lon } = location;
+
+    let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=6bb1b7f8b26934ef2b1028b12a559a0f`
+
+    fetch(forecastUrl)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            renderForecast(data);
+        })
 }
 
 const getCoords = (input) => {
@@ -67,6 +88,7 @@ const getCoords = (input) => {
         })
         .then(function (data) {
             getWeather(data[0]);
+            getForecast(data[0]);
         })
 
 }

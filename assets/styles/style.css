@@ -19,7 +19,12 @@ header {
     align-items: center;
 }
 
+main {
+    height: 80vh;
+}
+
 .searchAside {
+    height: 100%;
     background-color: whitesmoke;
 }
 
@@ -27,6 +32,15 @@ header {
     box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
 }
 
+.weatherResults {
+    height: 100%;
+}
+
+.todaysWeather {
+    height: 50%;
+}
+
 .forecastWeather {
+    height: 50%;
     background-color: cadetblue;
 }
