@@ -3,18 +3,48 @@ let searchInputEl = document.getElementById('search-input');
 let searchHistoryEl = document.getElementById('search-history');
 let clearHistoryEl = document.getElementById('clear-history');
 let todaysWeatherEl = document.querySelector('.todaysWeather');
+let forecastsWeatherEl = document.querySelector('.forecastWeather');
 
 let searchHistory = [];
 let lat;
 let lon;
 
 const renderForecast = (data) => {
-    console.log(data);
+    let forecastArr = data.list;
+    console.log(forecastArr);
+
+    let dayArr = [];
+
+    for (let i = 0; i < forecastArr.length; i++) {
+        // console.log(dayjs.unix(day.dt).format('MMM D, YYYY'))
+        let timestamp = forecastArr[i].dt
+        let convert = dayjs.unix(timestamp).format('MMM D, YYYY');
+        let convertedDay = dayjs.unix(timestamp).format('D');
+        // console.log(convertedDay);
+        let today = dayjs().format('D')
+        if (today !== convertedDay && dayArr.length === 0) {
+            dayArr.push({ day: convertedDay }) 
+        } else if (today !== convertedDay && !dayArr.includes.call(dayArr, convertedDay)) {
+            dayArr.push({ day: convertedDay })
+        }
+        console.log(dayArr)
+        // if (today !== convertedDay && dayArr.length === 0) {
+        //     dayArr.push(convertedDay) 
+        // } else if (today !== convertedDay && !dayArr.includes(convertedDay)) {
+        //     dayArr.push(convertedDay)
+        // }
+        // console.log(dayArr)
+    }
+    // forecastArr.map((day, index) => (
+    //     console.log(dayjs.unix(day.dt).format('MMM D, YYYY'))
+    //     // console.log(new Date(day.dt*1000))
+    // ))
+    
 }
 
 
 const renderToday = (data) => {
-    console.log(data);
+    // console.log(data);
     let currentDate = dayjs().format('MMM D, YYYY')
     let cityName = document.createElement('div');
     let temp = document.createElement('div');
@@ -66,6 +96,7 @@ const getForecast = (location) => {
     let { lat } = location;
     let { lon } = location;
 
+    // let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=5&appid=6bb1b7f8b26934ef2b1028b12a559a0f`
     let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=6bb1b7f8b26934ef2b1028b12a559a0f`
 
     fetch(forecastUrl)
