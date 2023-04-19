@@ -9,37 +9,58 @@ let searchHistory = [];
 let lat;
 let lon;
 
+const renderForecastCard = (data) => {
+    forecastsWeatherEl.innerHTML = '';
+    console.log('RENDERFORECASTCARDDATA');
+    console.log(data)
+
+    data.map((forecast, index) => {
+        let card = document.createElement('div');
+        let cardTitle = document.createElement('div');
+        let iconId = forecast.weather[0].icon;
+        let iconUrl = `http://openweathermap.org/img/w/${iconId}.png`
+        let iconImg = document.createElement('img');
+        let temp = document.createElement('div');
+        let wind = document.createElement('div');
+        let humidity = document.createElement('div');
+
+        cardTitle.textContent = dayjs.unix(forecast.dt).format('MMM D, YYYY');
+        iconImg.setAttribute('src', iconUrl);
+        temp.textContent = "Temp: " + forecast.main.temp
+        wind.textContent = "Wind: " + forecast.wind.speed
+        humidity.textContent = "Humidity: " + forecast.main.humidity
+
+        card.classList.add('card')
+
+        card.appendChild(cardTitle);
+        card.appendChild(iconImg)
+        card.appendChild(temp);
+        card.appendChild(wind);
+        card.appendChild(humidity);
+        forecastsWeatherEl.appendChild(card)
+    })
+}
+
 const renderForecast = (data) => {
     let forecastArr = data.list;
-    console.log(forecastArr);
 
     let dayArr = [];
 
     for (let i = 0; i < forecastArr.length; i++) {
-        // console.log(dayjs.unix(day.dt).format('MMM D, YYYY'))
         let timestamp = forecastArr[i].dt
-        let convert = dayjs.unix(timestamp).format('MMM D, YYYY');
+        let hour = dayjs.unix(timestamp).format('HH');
+
         let convertedDay = dayjs.unix(timestamp).format('D');
-        // console.log(convertedDay);
+
         let today = dayjs().format('D')
+
         if (today !== convertedDay && dayArr.length === 0) {
-            dayArr.push({ day: convertedDay }) 
-        } else if (today !== convertedDay && !dayArr.includes.call(dayArr, convertedDay)) {
-            dayArr.push({ day: convertedDay })
+            dayArr.push(forecastArr[i])
+        } else if (hour === '01') {
+            dayArr.push(forecastArr[i])
         }
-        console.log(dayArr)
-        // if (today !== convertedDay && dayArr.length === 0) {
-        //     dayArr.push(convertedDay) 
-        // } else if (today !== convertedDay && !dayArr.includes(convertedDay)) {
-        //     dayArr.push(convertedDay)
-        // }
-        // console.log(dayArr)
     }
-    // forecastArr.map((day, index) => (
-    //     console.log(dayjs.unix(day.dt).format('MMM D, YYYY'))
-    //     // console.log(new Date(day.dt*1000))
-    // ))
-    
+    renderForecastCard(dayArr);
 }
 
 
@@ -78,9 +99,9 @@ const getWeather = (location) => {
     let { lat } = location;
     let { lon } = location;
     let city = location.name;
-    
-    let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=6bb1b7f8b26934ef2b1028b12a559a0f`
-    
+
+    let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=6bb1b7f8b26934ef2b1028b12a559a0f`
+
     fetch(weatherUrl)
         .then(function (response) {
             return response.json();
@@ -89,7 +110,7 @@ const getWeather = (location) => {
             // renderWeather(data);
             renderToday(data);
         })
-    
+
 }
 
 const getForecast = (location) => {
@@ -97,7 +118,7 @@ const getForecast = (location) => {
     let { lon } = location;
 
     // let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=5&appid=6bb1b7f8b26934ef2b1028b12a559a0f`
-    let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=6bb1b7f8b26934ef2b1028b12a559a0f`
+    let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=6bb1b7f8b26934ef2b1028b12a559a0f`
 
     fetch(forecastUrl)
         .then(function (response) {
@@ -143,7 +164,7 @@ const getHistory = () => {
     for (let i = 0; i < searchHistory.length; i++) {
         let citiesEl = document.createElement('button');
         // citiesEl.setAttribute('data-city', searchHistory[i])
-        citiesEl.classList.add('btn','mb-3')
+        citiesEl.classList.add('btn', 'mb-3')
         citiesEl.textContent = searchHistory[i]
         searchHistoryEl.append(citiesEl);
     }
